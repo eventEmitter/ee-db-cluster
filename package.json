@@ -21,7 +21,9 @@
         , "ee-event-emitter"        : "*"
         , "ee-types"                : "*"
         , "ee-log"                  : "*"
-        , "ee-project"              : "*"
+        , "ee-ttl-queue"            : "*"
+        , "ee-arguments"            : "*"
+        , "ee-argv"                 : "*"
     }
     , "devDependencies": {
           "mocha"                   : "*"
