@@ -80,7 +80,22 @@
 					}
 				}
 				, from: 'event'
-				, select: ['id', function(){return {fn: 'max', property: 'deleted'}}]
+				, select: ['id', { 
+					  alias: 'bestORMEver' 
+					, query: {
+						filter: {
+							fabian: {
+								  sex: true
+								, withMen: true
+							}
+						}
+						, from: 'vandi'
+						, select: [
+							'id'
+						]
+						, limit: 1
+					}
+				}, function(){return {fn: 'max', property: 'deleted'}}]
 				, group: ['deleted']
 			}
 		]);
