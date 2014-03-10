@@ -57,7 +57,7 @@
 						}
 						, group: [
 							{ id: 3 }
-							, {name: 'fabi fotze'}
+							, {name: 'fabi'}
 						]
 						, random : function(){
 							return {

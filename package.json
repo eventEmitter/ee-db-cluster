@@ -1,7 +1,7 @@
 {
       "name"                        : "ee-db-cluster"
     , "description"                 : "db cluster implementation for ee-orm"
-    , "version"                     : "0.1.1"
+    , "version"                     : "0.1.2"
     , "homepage"                    : "https://github.com/eventEmitter/ee-db-cluster"
     , "author"                      : "Michael van der Weg <michael@eventemitter.com> (http://eventemitter.com/)" 
     , "licence"                     : "mit"
@@ -17,17 +17,17 @@
         "url"                       : "https://github.com/eventEmitter/ee-db-cluster/issues"
     }
     , "dependencies": {
-          "ee-class"                : "*"
-        , "ee-event-emitter"        : "*"
-        , "ee-types"                : "*"
-        , "ee-log"                  : "*"
-        , "ee-ttl-queue"            : "*"
-        , "ee-arguments"            : "*"
-        , "ee-argv"                 : "*"
+          "ee-class"                : "0.3.x"
+        , "ee-event-emitter"        : "0.1.x"
+        , "ee-types"                : "0.1.x"
+        , "ee-log"                  : "0.2.x"
+        , "ee-ttl-queue"            : "0.1.x"
+        , "ee-arguments"            : "0.1.x"
+        , "ee-argv"                 : "0.1.x"
     }
     , "devDependencies": {
-          "mocha"                   : "*"
-        , "ee-travis"               : "*"
+          "mocha"                   : "1.17.x"
+        , "ee-travis"               : "0.1.x"
     }
     , "optionalDependencies": {}
     , "keywords"                    : []
