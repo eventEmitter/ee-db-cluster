@@ -66,7 +66,7 @@
 									filter: {
 										fabian: {
 											  sex: true
-											, withMen: true
+											, age: 45
 										}
 									}
 									, from: 'vandi'
@@ -86,7 +86,7 @@
 						filter: {
 							fabian: {
 								  sex: true
-								, withMen: true
+								, age: 45
 							}
 						}
 						, from: 'vandi'
