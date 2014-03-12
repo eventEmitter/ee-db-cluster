@@ -28,7 +28,7 @@
 
 	cluster.addNode('readwrite', {
 		  username: 	'eb-client'
-		, password: 	''
+		, password: 	'wiegehtesdir55'
 		, host: 		'10.0.100.1'
 	});
 
@@ -70,6 +70,7 @@
 										}
 									}
 									, from: 'vandi'
+									, database: 'eventbox'
 									, select: [
 										'id'
 									]
@@ -80,6 +81,7 @@
 					}
 				}
 				, from: 'event'
+				, database: 'eventbox'
 				, select: ['id', { 
 					  alias: 'bestORMEver' 
 					, query: {
@@ -90,6 +92,7 @@
 							}
 						}
 						, from: 'vandi'
+						, database: 'eventbox'
 						, select: [
 							'id'
 						]
@@ -98,6 +101,8 @@
 				}, function(){return {fn: 'max', property: 'deleted'}}]
 				, group: ['deleted']
 			}
-		]);
+		], function(err, result){
+			log(err, result);
+		});
 	});
 

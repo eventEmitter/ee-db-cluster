@@ -13,3 +13,8 @@ DB agnostic db cluster implementation. The module manages connections to readonl
 ## build status
 
 [![Build Status](https://travis-ci.org/eventEmitter/ee-db-cluster.png?branch=master)](https://travis-ci.org/eventEmitter/ee-db-cluster)
+
+
+## Version History
+
+- 0.1.4: fixed bug in the cluster node implementation which didnt remove conenctions from the idle counter when a connection gets closed. Added version history to the docs
