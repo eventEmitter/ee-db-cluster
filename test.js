@@ -28,7 +28,7 @@
 
 	cluster.addNode('readwrite', {
 		  username: 	'eb-client'
-		, password: 	'wiegehtesdir55'
+		, password: 	''
 		, host: 		'10.0.100.1'
 	});
 
