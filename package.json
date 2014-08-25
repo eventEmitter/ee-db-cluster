@@ -17,8 +17,8 @@
         "url"                       : "https://github.com/eventEmitter/ee-db-cluster/issues"
     }
     , "dependencies": {
-          "ee-class"                : "0.4.x"
-        , "ee-event-emitter"        : "0.1.x"
+          "ee-class"                : "1.0.x"
+        , "ee-event-emitter"        : "0.2.x"
         , "ee-types"                : "0.1.x"
         , "ee-log"                  : "0.2.x"
         , "ee-ttl-queue"            : "0.1.x"
@@ -28,7 +28,6 @@
     , "devDependencies": {
           "mocha"                   : "1.17.x"
         , "ee-travis"               : "0.1.x"
-        , "ee-mysql-connection"     : "0.1.x"
     }
     , "optionalDependencies": {}
     , "keywords"                    : []
