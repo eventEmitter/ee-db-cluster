@@ -5,6 +5,7 @@ DB agnostic db cluster implementation. The module manages connections to readonl
 ## DB Connectors
 
 - MySQL: ee-mysq-connection 
+- POSTGRES : ee-postgres-connection
 
 ## installation
 
@@ -18,3 +19,4 @@ DB agnostic db cluster implementation. The module manages connections to readonl
 ## Version History
 
 - 0.1.4: fixed bug in the cluster node implementation which didnt remove conenctions from the idle counter when a connection gets closed. Added version history to the docs
+- 0.2.0: removed weak driver dependency
