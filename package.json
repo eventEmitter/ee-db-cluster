@@ -1,7 +1,7 @@
 {
       "name"                        : "ee-db-cluster"
-    , "description"                 : "db cluster implementation for the ee-orm package"
-    , "version"                     : "0.2.0"
+    , "description"                 : "db cluster implementation for the related orm"
+    , "version"                     : "0.3.0"
     , "homepage"                    : "https://github.com/eventEmitter/ee-db-cluster"
     , "author"                      : "Michael van der Weg <michael@eventemitter.com> (http://eventemitter.com/)" 
     , "licence"                     : "mit"
