@@ -20,7 +20,7 @@
         , "ee-event-emitter"        : "0.2.x"
         , "ee-types"                : "0.1.x"
         , "ee-log"                  : "0.2.x"
-        , "ee-ttl-queue"            : "0.1.x"
+        , "ee-ttl-queue"            : "0.2.x"
         , "ee-arguments"            : "0.1.x"
         , "ee-argv"                 : "0.1.x"
     }
