@@ -1,19 +1,19 @@
 {
-      "name"                        : "ee-db-cluster"
+      "name"                        : "related-db-cluster"
     , "description"                 : "db cluster implementation for the related orm"
-    , "version"                     : "0.3.0"
-    , "homepage"                    : "https://github.com/eventEmitter/ee-db-cluster"
-    , "author"                      : "Michael van der Weg <michael@eventemitter.com> (http://eventemitter.com/)" 
+    , "version"                     : "0.4.0"
+    , "homepage"                    : "https://github.com/eventEmitter/related-db-cluster"
+    , "author"                      : "Michael van der Weg <michael@joinbox.com> (http://joinbox.com/)" 
     , "licence"                     : "mit"
     , "repository": {
-          "url"                     : "https://github.com/eventEmitter/ee-db-cluster.git"
+          "url"                     : "https://github.com/eventEmitter/related-db-cluster.git"
         , "type"                    : "git"
     }
     , "engines": {
         "node"                      : ">=v0.10.17"
     }
     , "bugs": {
-        "url"                       : "https://github.com/eventEmitter/ee-db-cluster/issues"
+        "url"                       : "https://github.com/eventEmitter/related-db-cluster/issues"
     }
     , "dependencies": {
           "ee-class"                : "1.0.x"
