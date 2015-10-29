@@ -10,19 +10,19 @@
         , "type"                    : "git"
     }
     , "engines": {
-        "node"                      : ">=0.12"
+        "node"                      : ">=4"
     }
     , "bugs": {
         "url"                       : "https://github.com/eventEmitter/related-db-cluster/issues"
     }
     , "dependencies": {
-          "ee-class"                : "1.0.x"
-        , "ee-event-emitter"        : "0.2.x"
-        , "ee-types"                : "0.1.x"
-        , "ee-log"                  : "0.2.x"
-        , "ee-ttl-queue"            : "0.2.x"
-        , "ee-arguments"            : "0.1.x"
+          "ee-class"                : "1.x"
+        , "ee-types"                : "1.x"
+        , "ttl-queue"               : "1.x"
+        , "ee-event-emitter"        : "0.3.x"
+        , "ee-log"                  : "0.3.x"
         , "ee-argv"                 : "0.1.x"
+        , "linkd"                   : "0.3.x"
     }
     , "devDependencies": {}
     , "optionalDependencies": {}
