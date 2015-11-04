@@ -23,9 +23,12 @@
         , "ee-log"                  : "0.3.x"
         , "ee-argv"                 : "0.1.x"
     }
-    , "devDependencies": {}
+    , "devDependencies": {
+          "mocha"                           : "2.x"
+        , "related-postgres-connection"     : "*"
+    }
     , "optionalDependencies": {}
     , "scripts": {
-        "test"                      : "./node_modules/mocha/bin/mocha --reporter spec"
+        "test"                      : "./node_modules/mocha/bin/mocha --reporter spec --bail"
     }
 }
