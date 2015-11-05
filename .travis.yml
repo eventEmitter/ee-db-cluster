@@ -3,5 +3,13 @@ language: node_js
 node_js :
     - "v4"
 
-
 sudo: false
+
+
+addons:
+    postgresql: "9.4"
+
+
+before_script:
+  - psql -f test/sql/create-db.sql -U postgres
+  - psql -f test/sql/tables.sql -U postgres
