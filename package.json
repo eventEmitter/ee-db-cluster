@@ -1,34 +1,40 @@
 {
-      "name"                        : "related-db-cluster"
-    , "description"                 : "db cluster implementation for the related orm"
-    , "version"                     : "0.5.1"
-    , "homepage"                    : "https://github.com/eventEmitter/related-db-cluster"
-    , "author"                      : "Michael van der Weg <michael@joinbox.com> (http://joinbox.com/)"
-    , "license"                     : "MIT"
+      "name"                                : "related-db-cluster"
+    , "description"                         : "db cluster implementation for the related orm"
+    , "version"                             : "2.0.0"
+    , "homepage"                            : "https://github.com/eventEmitter/related-db-cluster"
+    , "author"                              : "Michael van der Weg <michael@joinbox.com> (http://joinbox.com/)"
+    , "license"                             : "MIT"
     , "repository": {
-          "url"                     : "https://github.com/eventEmitter/related-db-cluster.git"
-        , "type"                    : "git"
+          "url"                             : "https://github.com/eventEmitter/related-db-cluster.git"
+        , "type"                            : "git"
     }
     , "engines": {
-        "node"                      : ">=4"
+        "node"                              : ">=4"
     }
     , "bugs": {
-        "url"                       : "https://github.com/eventEmitter/related-db-cluster/issues"
+        "url"                               : "https://github.com/eventEmitter/related-db-cluster/issues"
     }
     , "dependencies": {
-          "ee-class"                : "1.x"
-        , "ee-types"                : "1.x"
-        , "linkd"                   : "1.x"
-        , "ee-event-emitter"        : "0.3.x"
-        , "ee-log"                  : "0.3.x"
-        , "ee-argv"                 : "0.1.x"
+          "ee-class"                        : "1.x"
+        , "ee-types"                        : "1.x"
+        , "linkd"                           : "1.x"
+        , "related-query-context"           : "2.x"
+        , "related-mysql-connection"        : "2.x"
+        , "related-mysql-query-builder"     : "2.x"
+        , "related-mysql-analyzer"          : "2.x"
+        , "related-postgres-connection"     : "2.x"
+        , "related-postgres-query-builder"  : "2.x"
+        , "related-postgres-analyzer"       : "2.x"
+        , "ee-event-emitter"                : "0.3.x"
+        , "ee-log"                          : "0.3.x"
+        , "ee-argv"                         : "0.1.x"
     }
     , "devDependencies": {
           "mocha"                           : "2.x"
-        , "related-postgres-connection"     : "*"
     }
     , "optionalDependencies": {}
     , "scripts": {
-        "test"                      : "./node_modules/mocha/bin/mocha --reporter spec --bail"
+        "test"                              : "./node_modules/mocha/bin/mocha --reporter spec --bail"
     }
 }

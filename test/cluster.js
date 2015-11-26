@@ -5,12 +5,12 @@
     var   Class                 = require('ee-class')
         , log                   = require('ee-log')
         , assert                = require('assert')
+        , QueryContext          = require('related-query-context')
         ;
 
 
 
     var   Cluster               = require('../')
-        , PostgresConnection    = require('related-postgres-connection')
         , config
         ;
 
@@ -38,7 +38,7 @@
 
     describe('The Cluster', function() {
         it('should not crash when instantiated', function() {
-            new Cluster(null, PostgresConnection);
+            new Cluster({driver: 'postgres'});
         });
 
 
@@ -46,25 +46,44 @@
         it('should be able to load a node', function(done) {
             this.timeout(10000);
 
-            let cluster = new Cluster(null, PostgresConnection);
+            let cluster = new Cluster({driver: 'postgres'});
 
             cluster.addNode(config).then(done).catch(done);
         });
 
 
 
+
+        it('should be able to describe the db', function(done) {
+            this.timeout(10000);
+
+            let cluster = new Cluster({driver: 'postgres'});
+
+            cluster.addNode(config).then(() => {
+
+                return cluster.describe(['related_db_cluster']).then((description) => {
+                    assert(description);
+                    done();
+                });
+            }).catch(done);
+        });
+
+
+
+
         it('should be able to execute a query', function(done) {
             this.timeout(10000);
 
-            let cluster = new Cluster(null, PostgresConnection);
+            let cluster = new Cluster({driver: 'postgres'});
 
             cluster.addNode(config).then(() => {
-                return cluster.query({
-                      SQL: 'INSERT INTO related_db_cluster.test (id) VALUES (default) RETURNING id;'
+                let qc = new QueryContext({
+                      sql: 'INSERT INTO related_db_cluster.test (id) VALUES (default) RETURNING id;'
                     , pool: 'write'
-                    , mode: 'insert'
-                }).then((record) => {
-                    assert(record && record.type && record.values && record.values.id);
+                });
+
+                return cluster.query(qc).then((data) => {
+                    assert(data && data.id);
                     done();
                 });
             }).catch(done);
@@ -75,21 +94,55 @@
         it('should be able to insert 1000 items', function(done) {
             this.timeout(10000);
 
-            let cluster = new Cluster(null, PostgresConnection);
+            let cluster = new Cluster({driver: 'postgres'});
 
             cluster.addNode(config).then(() => {
                 return Promise.all(Array.apply(null, {length: 1000}).map(() => {
-                    return cluster.query({
-                          SQL: 'INSERT INTO related_db_cluster.test (id) VALUES (default) RETURNING id;'
+                    return cluster.query(new QueryContext({
+                          sql: 'INSERT INTO related_db_cluster.test (id) VALUES (default) RETURNING id;'
                         , pool: 'write'
-                        , mode: 'insert'
-                    }).then((record) => {
-                        assert(record && record.type && record.values && record.values.id);
+                    })).then((data) => {
+                        assert(data && data.id);
                         return Promise.resolve();
                     });
                 })).then(() => {
                     done();
                 });               
+            }).catch(done);
+        });
+
+
+
+        it('should be able render a query', function(done) {
+            this.timeout(10000);
+
+            let cluster = new Cluster({driver: 'postgres'});
+
+
+            let context = new QueryContext({
+                query: {
+                      select: ['*']
+                    , from: 'test'
+                    , database: 'related_db_cluster'
+                    , mode: 'select'
+                    , filter: {
+                        id: function() {
+                            return {
+                                  operator: '>'
+                                , value: 1
+                            };
+                        }          
+                    }
+                }
+                , pool: 'write'
+            });
+
+
+            cluster.addNode(config).then(() => {
+                return cluster.query(context).then((data) => {
+                    assert(data && data.length);
+                    done();
+                });              
             }).catch(done);
         });
     });    
