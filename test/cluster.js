@@ -145,5 +145,43 @@
                 });              
             }).catch(done);
         });
+
+
+
+        it('should recover correctly from failed inserts', function(done) {
+            this.timeout(100000);
+
+            let cluster = new Cluster({driver: 'postgres'});
+
+            config.maxConnections = 5;
+
+            cluster.addNode(config).then(() => {
+
+                return Promise.all(Array.apply(null, {length: 100}).map(() => {
+                    return cluster.getConnection('write').then((conn) => {
+
+                        return conn.createTransaction().then(() => {
+                            return conn.query(new QueryContext({
+                                  sql:'INSERT nope;'
+                                , pool: 'write'
+                            })).then(() => {
+                                return Promise.resolve();
+                            }).catch((err) => {
+                                //log.info('rolling back');
+                                conn.rollback();
+                                return Promise.reject(err);
+                            });
+                        });
+                    }).then(() => {
+                        return Promise.resolve();
+                    }).catch((err) => {
+                        //log(err);
+                        return Promise.resolve();
+                    });
+                })).then((results) => {
+                    done();
+                });
+            }).catch(done);
+        });
     });    
 })();
