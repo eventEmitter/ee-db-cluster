@@ -18,6 +18,7 @@
 
     config = {
           db: 'test'
+        , schema: 'related_db_cluster'
         , maxConnections: 10
     };
 
@@ -177,7 +178,7 @@
                 });              
             }).catch(done);
         });
-        
+
 
 
 

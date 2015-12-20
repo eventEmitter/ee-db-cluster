@@ -4,8 +4,6 @@ node_js :
     - "v4"
     - "v5"
 
-sudo: false
-
 
 addons:
     postgresql: "9.4"
@@ -14,3 +12,6 @@ addons:
 before_script:
   - psql -f test/sql/create-db.sql -U postgres
   - psql -f test/sql/tables.sql -U postgres
+
+
+sudo: false
