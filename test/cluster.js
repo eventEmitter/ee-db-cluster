@@ -148,6 +148,39 @@
 
 
 
+        it('should be able compile an ast based query', function(done) {
+            this.timeout(10000);
+
+            let cluster = new Cluster({driver: 'postgres'});
+
+            let context = new QueryContext({
+                ast: {
+                    kind: 'selectQuery'
+                    , select: {
+                          kind: 'select'
+                        , selection: ['*']
+                    }
+                    , from: {
+                          kind: 'from'
+                        , entity: 'test'
+                        , database: 'related_db_cluster'
+                    } 
+                }
+                , pool: 'write'
+            });
+
+
+            cluster.addNode(config).then(() => {
+                return cluster.query(context).then((data) => {
+                    assert(data && data.length);
+                    done();
+                });              
+            }).catch(done);
+        });
+        
+
+
+
         it('should recover correctly from failed inserts', function(done) {
             this.timeout(100000);
 
