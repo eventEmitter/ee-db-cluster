@@ -21,8 +21,8 @@
         , schema: 'related_db_cluster'
         , maxConnections: 10
         , host: 'localhost'
-        , username: 'postgres'
-        , password: ''
+        , user: 'postgres'
+        , pass: ''
     };
 
 
