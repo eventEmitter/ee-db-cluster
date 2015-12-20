@@ -1,1 +1,1 @@
-CREATE DATABASE cluster_test;
+CREATE DATABASE test;

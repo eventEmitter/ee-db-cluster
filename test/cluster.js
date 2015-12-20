@@ -17,7 +17,7 @@
 
 
     config = {
-          database: 'cluster_test'
+          database: 'test'
         , schema: 'related_db_cluster'
         , maxConnections: 10
         , host: 'localhost'
@@ -63,7 +63,7 @@
 
             cluster.addNode(config).then(() => {
 
-                return cluster.describe(['related_db_cluster']).then((description) => { log(description);
+                return cluster.describe(['related_db_cluster']).then((description) => {
                     assert(description);
                     done();
                 });
