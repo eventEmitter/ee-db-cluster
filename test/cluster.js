@@ -63,7 +63,7 @@
 
             cluster.addNode(config).then(() => {
 
-                return cluster.describe(['related_db_cluster']).then((description) => {
+                return cluster.describe(['related_db_cluster']).then((description) => { log(description);
                     assert(description);
                     done();
                 });
