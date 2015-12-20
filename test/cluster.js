@@ -21,7 +21,7 @@
         , schema: 'related_db_cluster'
         , maxConnections: 10
         , host: 'localhost'
-        , user: 'postgres'
+        , user: 'travis'
         , pass: ''
     };
 
