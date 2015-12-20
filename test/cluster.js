@@ -80,7 +80,7 @@
 
             cluster.addNode(config).then(() => {
                 let qc = new QueryContext({
-                      sql: 'INSERT INTO related_db_cluster.test (id) VALUES (default) RETURNING id;'
+                      sql: 'INSERT INTO related_db_cluster."testTable" (id) VALUES (default) RETURNING id;'
                     , pool: 'write'
                 });
 
@@ -101,7 +101,7 @@
             cluster.addNode(config).then(() => {
                 return Promise.all(Array.apply(null, {length: 1000}).map(() => {
                     return cluster.query(new QueryContext({
-                          sql: 'INSERT INTO related_db_cluster.test (id) VALUES (default) RETURNING id;'
+                          sql: 'INSERT INTO related_db_cluster."testTable" (id) VALUES (default) RETURNING id;'
                         , pool: 'write'
                     })).then((data) => {
                         assert(data && data.id);
@@ -124,7 +124,7 @@
             let context = new QueryContext({
                 query: {
                       select: ['*']
-                    , from: 'test'
+                    , from: 'testTable'
                     , database: 'related_db_cluster'
                     , mode: 'select'
                     , filter: {
@@ -164,7 +164,7 @@
                     }
                     , from: {
                           kind: 'from'
-                        , entity: 'test'
+                        , entity: 'testTable'
                         , database: 'related_db_cluster'
                     } 
                 }
