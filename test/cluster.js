@@ -17,9 +17,10 @@
 
 
     config = {
-          db: 'test'
+          database: 'test'
         , schema: 'related_db_cluster'
         , maxConnections: 10
+        , host: 'localhost'
     };
 
 
@@ -33,9 +34,7 @@
     } catch(e) {}
 
     
-
-
-
+    
 
     describe('The Cluster', function() {
         it('should not crash when instantiated', function() {
