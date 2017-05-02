@@ -1,5 +1,7 @@
 # related-db-cluster
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/eventEmitter/related-db-cluster.svg)](https://greenkeeper.io/)
+
 DB agnostic db cluster implementation. The module manages connections to readonly, readwrite & writeonly db nodes. This module is used by the related module. 
 
 
