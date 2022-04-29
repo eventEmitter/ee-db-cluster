@@ -73,7 +73,7 @@
 
 
 
-        it('should be able to execute a query', function(done) {
+        it('should be able to execute an insert query', function(done) {
             this.timeout(10000);
 
             let cluster = new Cluster({driver: 'postgres'});
@@ -86,6 +86,26 @@
 
                 return cluster.query(qc).then((data) => {
                     assert(data && data.id);
+                    done();
+                });
+            }).catch(done);
+        });
+
+
+
+        it('should be able to execute a select query', function(done) {
+            this.timeout(10000);
+
+            let cluster = new Cluster({driver: 'postgres'});
+
+            cluster.addNode(config).then(() => {
+                let qc = new QueryContext({
+                      sql: 'select * from related_db_cluster."testTable" limit 1;'
+                    , pool: 'read'
+                });
+
+                return cluster.query(qc).then((data) => {
+                    assert(data && data.length);
                     done();
                 });
             }).catch(done);
@@ -136,7 +156,7 @@
                         }          
                     }
                 }
-                , pool: 'write'
+                , pool: 'read'
             });
 
 
@@ -174,7 +194,7 @@
 
             cluster.addNode(config).then(() => {
                 return cluster.query(context).then((data) => {
-                    assert(data && data.length);
+                    assert(data && data.rows.length);
                     done();
                 });              
             }).catch(done);
