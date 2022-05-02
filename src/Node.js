@@ -398,7 +398,7 @@ module.exports = class Node extends Events {
 	* be done
 	*/
 	resetNode() {
-		console.log(('The node «'+this.config.username+'@'+this.config.host+':'+this.config.port+'/'+this.config.database+'» is shutting down, ending all idle connections, re-initilizing the pool for this host!').yellow.bold);
+		log.warn(`The node «${this.config.username}@${this.config.host}:${this.config.port}/${this.config.database}» is shutting down, ending all idle connections, re-initilizing the pool for this host!`);
 
 		// close all connections as soon as possible
 		// this will immediatelly end all idle connections
