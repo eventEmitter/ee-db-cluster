@@ -179,9 +179,12 @@ module.exports = class Cluster extends Events {
 	 * check for connection requests that are taking too long
 	 */
 	executeTTLCheck() {
+		let removedRequests = 0;
+
 		for (let queue of this.queues.values()) {
 			while (queue.length && queue.getLast().isExpired(this.ttl)) {
 				let request = queue.shift();
+
 
 				// cancel item
 				request.abort(new Error(`The connection request for a database connection timed out after ${this.ttl} seconds!`));
@@ -190,9 +193,15 @@ module.exports = class Cluster extends Events {
 				this.removeFromQueue(request);
 
 				// get the user some information about the cluster
-				this.printStats();
+				if (removedRequests === 0) {
+					this.printStats();
+				}
+
+				removedRequests++;
 			}
 		}
+
+		log.warn(`Removed ${removedRequests} expired connection requests`);
 	}
 
 
