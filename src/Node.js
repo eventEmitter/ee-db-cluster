@@ -29,9 +29,6 @@ module.exports = class Node extends Events {
 	// number of connections beeing created at the moement
 	creatingCount = 0;
 
-	// prefetch in % (e.g. 10 = 10%, if you hav a max of 50 connections, there shoudl always be 5 idling connections)
-	prefetchPercent = 10;
-
 	// time in ms between two failed connection attempts
 	throttleTime = 10;
 
@@ -169,7 +166,6 @@ module.exports = class Node extends Events {
 		log.info(`Max connections: ${this.maxConnections}`);
 		log.info(`Connection count: ${this.count}`);
 		log.info(`Creating count: ${this.creatingCount}`);
-		log.info(`Prefetch percent: ${this.prefetchPercent}`);
 	}
 
 
@@ -188,7 +184,6 @@ module.exports = class Node extends Events {
 		log.debug(`Max connections: ${this.maxConnections}`);
 		log.debug(`Connection count: ${this.count}`);
 		log.debug(`Creating count: ${this.creatingCount}`);
-		log.debug(`Prefetch percent: ${this.prefetchPercent}`);
 
 		// first we need to check our status and if we're  allowed to create more
 		// connections. It cannot be ended, there shall not too many idling connections
