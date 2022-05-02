@@ -118,7 +118,7 @@ module.exports = class Cluster extends Events {
 		}
 
 		log.info(`Node count: ${this.nodes.size}`);
-		for (const node of this.queueMap.values()) {
+		for (const node of this.nodes.values()) {
 			node.printStats();
 		}
 	}
