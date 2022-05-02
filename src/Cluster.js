@@ -179,10 +179,13 @@ module.exports = class Cluster extends Events {
 				let request = queue.shift();
 
 				// cancel item
-				request.abort(new Error('The connection request for a database connection timed out!'));
+				request.abort(new Error(`The connection request for a database connection timed out after ${this.ttl} seconds!`));
 
 				// remove from other queues
 				this.removeFromQueue(request);
+
+				// get the user some information about the cluster
+				this.printStats();
 			}
 		}
 	}

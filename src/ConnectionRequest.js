@@ -1,13 +1,14 @@
 const logd = require('logd');
 
 
+const log = logd.module('ConnectionRequest');
 
 
 module.exports = class ConnectionRequest {
 
     // the timestamp is used to check if 
     // the request is already qaiting too long
-    created = Date.now();
+    created = null;
 
 
     // each request has a unique id
