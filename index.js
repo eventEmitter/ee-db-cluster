@@ -1,3 +1,3 @@
 
 
-	module.exports = require('./lib/Cluster');
+	module.exports = require('./src/Cluster');

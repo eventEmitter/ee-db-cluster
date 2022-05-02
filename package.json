@@ -16,11 +16,6 @@
         "url": "https://github.com/linaGirl/related-db-cluster/issues"
     },
     "dependencies": {
-        "ee-argv": "0.1.x",
-        "ee-class": "1.x",
-        "ee-event-emitter": "0.3.x",
-        "ee-log": "0.3.x",
-        "ee-types": "1.x",
         "linkd": "1.x",
         "logd": "^2.3.1",
         "related-mysql-analyzer": "2.x",
