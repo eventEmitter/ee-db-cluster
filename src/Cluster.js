@@ -110,11 +110,16 @@ module.exports = class Cluster extends Events {
 
 	printStats() {
 		log.info(`============= Cluster Stats =============`);
-		log.debug(`Driver: ${this.driverName}; TTL: ${this.ttl}`);
-		log.debug(`Queue / Max: ${this.queueLength} / ${this.maxQueueLength}`);
-		log.debug(`Pool count: ${this.pools.size}`);
+		log.info(`Driver: ${this.driverName}; TTL: ${this.ttl}`);
+		log.info(`Queue / Max: ${this.queueLength} / ${this.maxQueueLength}`);
+		log.info(`Pool count: ${this.pools.size}`);
 		for (const [name, pool] of this.queueMap.entries()) {
-			log.debug(`- pool ${name} has ${pool.size} idle connections`);
+			log.info(`- pool ${name} has ${pool.size} idle connections`);
+		}
+
+		log.info(`Node count: ${this.nodes.size}`);
+		for (const node of this.queueMap.values()) {
+			node.printStats();
 		}
 	}
 
@@ -378,7 +383,7 @@ module.exports = class Cluster extends Events {
 				// create node instance, set some sane defaults 
 				// (this should work for most CIs)
 				let node = new Node({
-						host 					: configuration.host || 'localhost'
+					  host 					: configuration.host || 'localhost'
 					, username  			: configuration.username || configuration.user
 					, password  			: configuration.password || configuration.pass || ''
 					, port 					: configuration.port

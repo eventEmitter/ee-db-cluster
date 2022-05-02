@@ -165,7 +165,15 @@ module.exports = class Node extends Events {
 
 
 	
-
+	printStats() {
+		log.info(`Node has ended: ${this.ended}`);
+		log.info(`Node is throttling: ${this.throttling}`);
+		log.info(`Idle connection percentage: ${this.idle}`);
+		log.info(`Max connections: ${this.maxConnections}`);
+		log.info(`Connection count: ${this.count}`);
+		log.info(`Creating count: ${this.creatingCount}`);
+		log.info(`Prefetch percent: ${this.prefetchPercent}`);
+	}
 
 
 
