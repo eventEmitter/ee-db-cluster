@@ -210,7 +210,8 @@ module.exports = class Node extends Events {
 							// needed
 							this.createConnection();
 						}).catch((err) => {
-
+							log.warn(`Failed to create connection: ${err.message}`);
+							console.warn(`Failed to create connection: ${err.message}`);
 							// try again
 							this.createConnection();
 						});

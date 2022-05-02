@@ -19,7 +19,7 @@
         "linkd": "1.x",
         "logd": "^2.3.1",
         "related-mysql-analyzer": "2.x",
-        "related-mysql-connection": "2.x",
+        "related-mysql-connection": "^2.0.2",
         "related-mysql-query-builder": "2.x",
         "related-mysql-query-compiler": "0.x",
         "related-postgres-analyzer": "2.x",
