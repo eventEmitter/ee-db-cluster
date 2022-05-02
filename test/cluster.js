@@ -90,12 +90,37 @@ describe('The Cluster', function() {
 
         cluster.addNode(config).then(() => {
             let qc = new QueryContext({
-                    sql: 'select * from related_db_cluster."testTable" limit 1;'
+                  sql: 'select * from related_db_cluster."testTable" limit 1;'
                 , pool: 'read'
             });
 
             return cluster.query(qc).then((data) => {
                 assert(data && data.length);
+                done();
+            });
+        }).catch(done);
+    });
+
+
+
+
+    it('should be able to execute many select queries', function(done) {
+        this.timeout(10000);
+
+        let cluster = new Cluster({driver: 'postgres'});
+
+        cluster.addNode(config).then(() => {
+            return Promise.all(Array.apply(null, {length: 1000}).map(() => {
+                const qc = new QueryContext({
+                    sql: 'select * from related_db_cluster."testTable" limit 1;'
+                  , pool: 'read'
+                });
+  
+                cluster.query(qc).then((data) => {
+                    assert(data && data.length);
+                    return Promise.resolve();
+                });
+            })).then(() => {
                 done();
             });
         }).catch(done);

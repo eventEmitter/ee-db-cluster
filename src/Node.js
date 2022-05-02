@@ -29,9 +29,6 @@ module.exports = class Node extends Events {
 	// number of connections beeing created at the moement
 	creatingCount = 0;
 
-	// currently idle connection count
-	idleCount = 0;
-
 	// prefetch in % (e.g. 10 = 10%, if you hav a max of 50 connections, there shoudl always be 5 idling connections)
 	prefetchPercent = 10;
 
@@ -83,7 +80,7 @@ module.exports = class Node extends Events {
 	// connections currently created are also counted
 	// as idle connections
 	get idle() {
-		return Math.round((this.idleCount/this.maxConnections)*100);
+		return Math.round((this.count/this.maxConnections)*100);
 	}
 
 
@@ -196,7 +193,7 @@ module.exports = class Node extends Events {
 		// first we need to check our status and if we're  allowed to create more
 		// connections. It cannot be ended, there shall not too many idling connections
 		// and we shall not exceed the max connections 
-		if (!this.ended && this.idle < this.prefetchPercent && (this.count+this.creatingCount) < this.maxConnections) {
+		if (!this.ended && this.idle < this.prefetchPercent && (this.count + this.creatingCount) < this.maxConnections) {
 			log.debug(`Connection can be created ..`);
 
 			// if there were connection errors the pace on which
@@ -233,7 +230,6 @@ module.exports = class Node extends Events {
 							this.createConnection();
 						}).catch((err) => {
 							log.warn(`Failed to create connection: ${err.message}`);
-							console.warn(`Failed to create connection: ${err.message}`);
 							// try again
 							this.createConnection();
 						});
@@ -244,7 +240,12 @@ module.exports = class Node extends Events {
 				log.debug(`Connection creation is notthrottled`);
 
 				// create the connection now
-				this.executeCreateConnection().then(() => {});
+				this.executeCreateConnection().catch((err) => {
+					log.warn(`Failed to create connection: ${err.message}`);
+
+					// try again
+					this.createConnection();
+				})
 
 				// create as many connections as needed, create one,
 				// call this method again
@@ -277,18 +278,14 @@ module.exports = class Node extends Events {
 
 		// connect
 		return connection.connect().then(() => {
-			this.idleCount++;
-
 			log.debug(`connection created ...`);
 
-			// decrease it, so that new connecitons can be made
 			this.creatingCount--;
+
 
 			// make sure the connection is removed as soon as it ends
 			connection.once('end', (err) => {
 				if (this.connections.has(connection.id)) this.connections.remove(connection.id);
-
-				this.idleCount--;
 
 				// get a new conenction
 				this.createConnection();
@@ -308,17 +305,19 @@ module.exports = class Node extends Events {
 			// decrease it, so that new connecitons can be made
 			this.creatingCount--;
 
-			// the node may have ended, so we need to check for that
-			if (this.ended) {
-				log.warn('Node has ended, not able to handle connection errors properly. sorry!', err);
-				throw err;
-			}
 
 			// remove from storage
 			if (this.connections.has(connection.id)) this.connections.remove(connection.id);
 
 			// we shoud start throttling connection creation
 			this.throttling = true;
+
+
+			// the node may have ended, so we need to check for that
+			if (this.ended) {
+				log.warn('Node has ended, not able to handle connection errors properly. sorry!', err);
+				throw err;
+			}
 
 			// so, thats a problem, we got a specialized handler
 			// for this case, it tries to detect if the host is 
@@ -440,7 +439,6 @@ module.exports = class Node extends Events {
 
 		// reset counters
 		this.creatingCount = 0;
-		this.idleCount = 0;
 
 		this.throttling = true;
 		this.throttleTime = 10;

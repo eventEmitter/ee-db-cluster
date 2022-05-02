@@ -428,7 +428,7 @@ module.exports = class Cluster extends Events {
 
 					// add the connection to the pools as soon its getting idle
 					connection.on('idle', () => {
-							this.handleIdleConnection(node, connection);
+						this.handleIdleConnection(node, connection);
 					});
 					
 
