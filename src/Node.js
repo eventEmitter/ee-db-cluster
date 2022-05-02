@@ -176,26 +176,40 @@ module.exports = class Node extends Events {
 	* create the actual connection
 	*/
 	createConnection() {
+		log.debug(`Creating connection on node ${this.config.username}@${this.config.host}:${this.config.port}`);
+		log.debug(`Node has ended: ${this.ended}`);
+		log.debug(`Node is throttling: ${this.throttling}`);
+		log.debug(`Idle connection percentage: ${this.idle}`);
+		log.debug(`Max connections: ${this.maxConnections}`);
+		log.debug(`Connection count: ${this.count}`);
+		log.debug(`Creating count: ${this.creatingCount}`);
+		log.debug(`Prefetch percent: ${this.prefetchPercent}`);
 
 		// first we need to check our status and if we're  allowed to create more
 		// connections. It cannot be ended, there shall not too many idling connections
 		// and we shall not exceed the max connections 
 		if (!this.ended && this.idle < this.prefetchPercent && (this.count+this.creatingCount) < this.maxConnections) {
+			log.debug(`Connection can be created ..`);
 
 			// if there were connection errors the pace on which
 			// we're creating new connections is reduced with each 
 			// attempt to create a new connection
 			if (this.throttling) {
+				log.debug(`Connection creation is throttled`);
 
 				// in throttling mode there can not be more 
 				// than one connection attempt the any given time
 				if (this.creatingCount === 0) {
+					log.debug(`No connection attempt is in progress`);
 
 					// increase the throttling time on each run by 10%
 					this.throttleTime = Math.ceil(this.throttleTime*1.1);
 
+					log.debug(`Throttling time is now: ${this.throttleTime}`);
+
 					// wait until the next attempt to connect
 					setTimeout(() => {
+						log.debug(`Throttling time is over, starting connection attempt`);
 
 						// wait for the result, decide what to do
 						// after that
@@ -219,6 +233,7 @@ module.exports = class Node extends Events {
 				}
 			}
 			else {
+				log.debug(`Connection creation is notthrottled`);
 
 				// create the connection now
 				this.executeCreateConnection().then(() => {});
@@ -250,10 +265,13 @@ module.exports = class Node extends Events {
 		// increase create conenction indicator
 		this.creatingCount++;
 
+		log.debug(`creating connection ...`);
 
 		// connect
 		return connection.connect().then(() => {
 			this.idleCount++;
+
+			log.debug(`connection created ...`);
 
 			// decrease it, so that new connecitons can be made
 			this.creatingCount--;
