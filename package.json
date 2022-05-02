@@ -23,7 +23,7 @@
         "related-mysql-query-builder": "2.x",
         "related-mysql-query-compiler": "0.x",
         "related-postgres-analyzer": "2.x",
-        "related-postgres-connection": "^2.3.5",
+        "related-postgres-connection": "^2.3.6",
         "related-postgres-query-builder": "2.x",
         "related-postgres-query-compiler": "0.x",
         "related-query-context": "2.x"
