@@ -52,7 +52,9 @@ module.exports = class Cluster extends Events {
 	 */
 	constructor(options) {
 		super();
-		
+
+		log.debug(`Loading the DB cluster ..`);
+
 		// validate
 		if (!options) throw new Error('The cluster expects an options object!');
 		if (!options.driver) throw new Error('Please define which driver the cluster must load!');
@@ -61,7 +63,7 @@ module.exports = class Cluster extends Events {
 		// currently postgres or mysql, they are included 
 		// in this package using npm
 		this.driverName = options.driver;
-
+		log.debug(`The Cluster uses the ${this.driverName} driver`);
 
 		
 		// load vendor modules
@@ -101,13 +103,6 @@ module.exports = class Cluster extends Events {
 
 		// check for the ttl regularly
 		this.checkInterval = setInterval(this.executeTTLCheck.bind(this), this.ttlCheckInterval);
-
-
-		if (process.argv.includes('--debug-db-cluster')){
-			setInterval(() => {
-				this.printStats();
-			}, 10000);
-		}
 	}
 
 
@@ -313,7 +308,6 @@ module.exports = class Cluster extends Events {
 	 */
 	setUpPool(node) {
 
-
 		// make sure that we have a pool for every pool set on the node
 		node.pools.forEach((poolName) => {
 			if (!this.pools.has(poolName)) {
@@ -460,9 +454,11 @@ module.exports = class Cluster extends Events {
 	 * @param {connection} the connection that has become idle
 	 */
 	handleIdleConnection(node, connection) {
+		log.debug('Got idle DB connection for pools «'+node.compositeName+'»');
 
 		// checl if we got a connection request wiating for us
 		if (this.queues.has(node.compositeName) && this.queues.get(node.compositeName).length) {
+			log.debug(`Got queries waiting for a connection in the queue, executing it`);
 
 			// we got a connection request to execute
 			let request = this.queues.get(node.compositeName).shift();
@@ -475,7 +471,8 @@ module.exports = class Cluster extends Events {
 			request.execute(connection);
 		}
 		else {
-			
+			log.debug(`No queries waiting for a connection in the queue, adding to pool`);
+
 			// add the connection to the pools
 			for (let poolName of node.pools) this.pools.get(poolName).push(connection.id, connection);
 		}
@@ -516,6 +513,8 @@ module.exports = class Cluster extends Events {
 	 * @returns {Promise} 
 	 */
 	getDBConnection(poolName) {
+		log.debug(`Got a connection request for the pool «${poolName}»`);
+
 		if (this.ended) return Promise.reject(new Error('The cluster has ended, cannot get connection!'));
 		else if (this.pools.has(poolName) && this.pools.get(poolName).length) {
 			let connection = this.pools.get(poolName).shift();
@@ -524,11 +523,21 @@ module.exports = class Cluster extends Events {
 				if (pn !== poolName) this.pools.get(pn).remove(connection.id);
 			});
 
+			log.debug(`Got a connection from the pool «${poolName}», returning to user`);
+
 			return Promise.resolve(connection);
 		}
-		else if (!this.queueMap.has(poolName) || !this.queueMap.get(poolName).size) return Promise.reject(new Error('Cannot get connection, no host is serving the pool «'+poolName+'»!'));
-		else if (this.queueLength >= this.maxQueueLength) return Promise.reject(new Error('The connection queue is overflowing, request rejected!'));
-		else {
+		else if (!this.queueMap.has(poolName) || !this.queueMap.get(poolName).size) {
+			log.debug(`The cluster doesnt serve the requested pool «${poolName}»!`);
+
+			return Promise.reject(new Error('Cannot get connection, no host is serving the pool «'+poolName+'»!'));
+		} else if (this.queueLength >= this.maxQueueLength) {
+			log.debug(`The cluster queue is full, cannot get connection!`);
+
+			return Promise.reject(new Error('The connection queue is overflowing, request rejected!'));
+		} else {
+			log.debug(`No connection available in the pool «${poolName}», adding to queue`);
+
 			return new Promise((resolve, reject) => {
 
 				// create a new connection request
@@ -559,6 +568,8 @@ module.exports = class Cluster extends Events {
 	 */
 	getConnection(poolName) {
 		return this.getDBConnection(poolName).then((connection) => {
+			log.debug(`Got a connection from the pool «${poolName}», removing from the pool, returning to user`);
+
 			connection.removeFromPool();
 
 			return Promise.resolve(connection);
@@ -590,9 +601,15 @@ module.exports = class Cluster extends Events {
 		else if (typeof queryContext.pool !== 'string') return Promise.reject(new Error('Missing the pool property on the query context!'));
 		else {
 
+			log.debug(`Got a query request for the pool «${queryContext.pool}»`);
+
 			// adding new ast support!
 			if (!queryContext.isReady() && queryContext.ast) {
+				log.debug(`The query is not ready, but has an AST, compiling it`);
+
 				return this.compiler.compile(queryContext).then(() => {
+					log.debug(`The AST query is now ready, executing it`);
+
 					queryContext.sql += ';';
 					return this.query(queryContext);
 				});
@@ -600,12 +617,18 @@ module.exports = class Cluster extends Events {
 			else {
 				// the oldschool way to do things
 				return this.getDBConnection(queryContext.pool).then((connection) => {
+					log.debug(`Got a connection from the pool «${queryContext.pool}», executing query`);
 
 					// nice, we got a connection, let us check if we 
 					// may have to render anything
-					if (queryContext.isReady()) return connection.query(queryContext);
-					else {
+					if (queryContext.isReady()) {
+						log.debug(`The query is ready, executing it`);
 
+						return connection.query(queryContext);
+					}
+					else {
+						log.debug(`The query is not ready, rendering it`);
+						
 						// let the querybuilder create sql
 						return new this.QueryBuilderConstructor(connection).render(queryContext).then(() => {
 														

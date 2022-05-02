@@ -3,6 +3,7 @@ const QueryContext = require('related-query-context');
 const Cluster = require('../');
 
 
+
 let config = {
     database: 'test'
   , schema: 'related_db_cluster'
@@ -26,6 +27,8 @@ try {
 
 
 describe('The Cluster', function() {
+
+
     it('should not crash when instantiated', function() {
         new Cluster({driver: 'postgres'});
     });
