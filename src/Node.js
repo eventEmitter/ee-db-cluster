@@ -193,7 +193,7 @@ module.exports = class Node extends Events {
 		// first we need to check our status and if we're  allowed to create more
 		// connections. It cannot be ended, there shall not too many idling connections
 		// and we shall not exceed the max connections 
-		if (!this.ended && this.idle < this.prefetchPercent && (this.count + this.creatingCount) < this.maxConnections) {
+		if (!this.ended && (this.count + this.creatingCount) < this.maxConnections) {
 			log.debug(`Connection can be created ..`);
 
 			// if there were connection errors the pace on which

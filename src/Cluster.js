@@ -201,7 +201,7 @@ module.exports = class Cluster extends Events {
 			}
 		}
 
-		log.warn(`Removed ${removedRequests} expired connection requests`);
+		if (removedRequests > 0) log.warn(`Removed ${removedRequests} expired connection requests`);
 	}
 
 
