@@ -26,6 +26,9 @@ module.exports = class Cluster extends Events {
 	ended = false;
 
 
+	executedQueryCounter = 0;
+
+
 	// ttl check interval
 	ttlCheckInterval = 30000;
 
@@ -112,6 +115,7 @@ module.exports = class Cluster extends Events {
 		log.info(`============= Cluster Stats =============`);
 		log.info(`Driver: ${this.driverName}; TTL: ${this.ttl}`);
 		log.info(`Queue / Max: ${this.queueLength} / ${this.maxQueueLength}`);
+		log.info(`Number of executed queries: ${this.executedQueryCounter}`);
 		log.info(`Pool count: ${this.pools.size}`);
 		for (const [name, pool] of this.queueMap.entries()) {
 			log.info(`- pool ${name} has ${pool.size} idle connections`);
@@ -600,7 +604,13 @@ module.exports = class Cluster extends Events {
 
 
 
+	queryExecutedCounter() {
+		if (this.executedQueryCounter >= Number.MAX_SAFE_INTEGER) {
+			this.executedQueryCounter = 0;
+		}
 
+		this.executedQueryCounter++;
+	}
 
 
 
@@ -641,6 +651,7 @@ module.exports = class Cluster extends Events {
 					if (queryContext.isReady()) {
 						log.debug(`The query is ready, executing it`);
 
+						this.queryExecutedCounter();
 						return connection.query(queryContext);
 					}
 					else {
@@ -650,6 +661,7 @@ module.exports = class Cluster extends Events {
 						return new this.QueryBuilderConstructor(connection).render(queryContext).then(() => {
 														
 							// execute query
+							this.queryExecutedCounter();
 							return connection.query(queryContext);
 						});
 					}
